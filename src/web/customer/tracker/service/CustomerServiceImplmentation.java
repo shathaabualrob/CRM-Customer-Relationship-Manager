@@ -45,9 +45,14 @@ public class CustomerServiceImplmentation implements CustomerService {
 	@Override
 	@Transactional
 	public List<Customer> searchCustomerByName(String name) {
-		System.out.println("inside service");
-
 		return customerDAO.searchCustomerByName(name);
+	}
+
+	@Override
+	@Transactional
+	public List<Customer> getSortedCustomers(int theSortField) {
+		System.out.println("inside service");
+		return customerDAO.getSortedCustomers(theSortField);
 	}
 
 }

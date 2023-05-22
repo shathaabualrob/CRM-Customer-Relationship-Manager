@@ -1,5 +1,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="web.customer.tracker.util.SortUtils" %>
+<!-- construct a sort link for each th -->		
+<!--  First Name -->
+<c:url var="sortLinkFirstName" value="/customer/sort">
+	<c:param name="sort" value="<%= Integer.toString(SortUtils.FIRST_NAME) %>" />
+</c:url>
+<!-- Last Name -->
+<c:url var="sortLinkLastName" value="/customer/sort">
+	<c:param name="sort" value="<%= Integer.toString(SortUtils.LAST_NAME) %>" />
+</c:url>
+<!-- Email-->
+<c:url var="sortLinkEmail" value="/customer/sort">
+	<c:param name="sort" value="<%= Integer.toString(SortUtils.EMAIL) %>" />
+</c:url>
+
 <!DOCTYPE unspecified PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -32,9 +47,10 @@
 	            </form:form>
 				<table>
 					<tr>
-						<th>First Name</th>
-						<th>Last Name</th>
-						<th>Email</th>
+						
+						<th><a href="${sortLinkFirstName}">First Name</a></th>
+						<th><a href="${sortLinkLastName}">Last Name</a></th>
+						<th><a href="${sortLinkEmail}">Email</a></th>
 						<th>Action</th>
 					</tr>
 					<c:forEach var="customer" items="${customers}">

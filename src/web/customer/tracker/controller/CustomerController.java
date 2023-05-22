@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 //import web.customer.tracker.dao.CustomerDAO;
 import web.customer.tracker.entity.Customer;
 import web.customer.tracker.service.CustomerService;
+import web.customer.tracker.util.SortUtils;
 
 @Controller
 @RequestMapping("/customer")
@@ -81,7 +82,6 @@ public class CustomerController {
 	@GetMapping("/search")
 	public String searchCustomer(@RequestParam("name") String name,
 			Model model) {
-		System.out.println("inside controller");
 
 		// search the customer from the service
 		List<Customer> customersResult = customerService.searchCustomerByName(name);
@@ -90,6 +90,21 @@ public class CustomerController {
 		model.addAttribute("customers", customersResult);
 		
 		return "list-customers"; 
+	}
+	@GetMapping("/sort")
+	public String sortCustomers(Model model,
+			@RequestParam(required=false) String sort) {
+		System.out.println("inside controller");
+		List<Customer> sortedCustomers = null;
+		
+		if(sort!=null) {
+			int theSortField = Integer.parseInt(sort);
+			sortedCustomers = customerService.getSortedCustomers(theSortField);
+		}else {
+			sortedCustomers = customerService.getSortedCustomers(SortUtils.LAST_NAME);
+		}
+		model.addAttribute("customers", sortedCustomers);
+		return "list-customers";
 	}
 	
 	

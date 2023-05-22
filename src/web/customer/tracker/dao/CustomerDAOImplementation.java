@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import web.customer.tracker.entity.Customer;
+import web.customer.tracker.util.SortUtils;
 
 @Repository
 public class CustomerDAOImplementation implements CustomerDAO {
@@ -72,7 +73,6 @@ public class CustomerDAOImplementation implements CustomerDAO {
 
 	@Override
 	public List<Customer> searchCustomerByName(String name) {
-		System.out.println("inside DAO");
 		// get the current hibernate sesison
 		Session currentSession = sessionFactory.getCurrentSession();
 		
@@ -101,6 +101,35 @@ public class CustomerDAOImplementation implements CustomerDAO {
 		List<Customer> customers = query.getResultList();
 		
 		return customers;
+	}
+
+	@Override
+	public List<Customer> getSortedCustomers(int theSortField) {
+		System.out.println("inside DAO");
+		// get the current hibernate sesison
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		// determine sort field
+		String theFieldName = null;
+		
+		switch (theSortField) {
+			case SortUtils.FIRST_NAME: 
+				theFieldName = "firstName";
+				break;
+			case SortUtils.LAST_NAME:
+				theFieldName = "lastName";
+				break;
+			case SortUtils.EMAIL:
+				theFieldName = "email";
+				break;
+			default:
+				theFieldName = "lastName";
+		}		
+		String queryString = "from Customer order by "+ theFieldName;
+		Query<Customer> resultCustomers = currentSession.createQuery(queryString, Customer.class);
+		List<Customer> sortedCustomers = resultCustomers.getResultList();
+		
+		return sortedCustomers;
 	}
 
 }
